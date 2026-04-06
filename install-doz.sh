@@ -70,11 +70,6 @@ dozbranch() {
 
 # ── Вспомогательные функции ──────────────────────────────────
 
-# Преобразование ветки в формат для image path (/ → ----)
-_doz_branch_to_image() {
-    echo "$1" | sed 's|/|----|g'
-}
-
 # Проверка существующего контейнера
 _doz_check_container() {
     local name="$1"
@@ -118,8 +113,7 @@ dozrun() {
     local mmdd=$(date +%m%d)
     local container="doznanie_${date_suffix}"
     local port="1${mmdd}"
-    local image_branch=$(_doz_branch_to_image "$branch")
-    local image="${_DOZ_REGISTRY}/srv-main----${image_branch}:${pipeline}"
+    local image="${_DOZ_REGISTRY}/srv-main----${branch}:${pipeline}"
 
     _doz_check_container "$container" || return 1
 
@@ -147,8 +141,7 @@ dozrun-prod() {
     local mmdd=$(date +%m%d)
     local container="doznanie_${date_suffix}"
     local port="1${mmdd}"
-    local image_branch=$(_doz_branch_to_image "$branch")
-    local image="${_DOZ_REGISTRY}/srv-main----${image_branch}:${pipeline}"
+    local image="${_DOZ_REGISTRY}/srv-main----${branch}:${pipeline}"
 
     _doz_check_container "$container" || return 1
 
@@ -178,8 +171,7 @@ dozrun-kafka() {
     local mmdd=$(date +%m%d)
     local container="doznanie__consumer_${date_suffix}"
     local port="4${mmdd}"
-    local image_branch=$(_doz_branch_to_image "$branch")
-    local image="${_DOZ_REGISTRY}/srv-kafka----${image_branch}:${pipeline}"
+    local image="${_DOZ_REGISTRY}/srv-kafka----${branch}:${pipeline}"
 
     _doz_check_container "$container" || return 1
 
@@ -207,8 +199,7 @@ dozrun-kafka-prod() {
     local mmdd=$(date +%m%d)
     local container="doznanie__consumer_${date_suffix}"
     local port="6${mmdd}"
-    local image_branch=$(_doz_branch_to_image "$branch")
-    local image="${_DOZ_REGISTRY}/srv-kafka----${image_branch}:${pipeline}"
+    local image="${_DOZ_REGISTRY}/srv-kafka----${branch}:${pipeline}"
 
     _doz_check_container "$container" || return 1
 
@@ -238,8 +229,7 @@ dozrun-gost() {
     local mmdd=$(date +%m%d)
     local container="doznanie__gost-signer_${date_suffix}"
     local port="1${mmdd}"
-    local image_branch=$(_doz_branch_to_image "$branch")
-    local image="${_DOZ_REGISTRY}/srv-gost-signer----${image_branch}:${pipeline}"
+    local image="${_DOZ_REGISTRY}/srv-gost-signer----${branch}:${pipeline}"
 
     _doz_check_container "$container" || return 1
 
@@ -279,8 +269,7 @@ dozrun-gost-prod() {
     local mmdd=$(date +%m%d)
     local container="doznanie__gost-signer_${date_suffix}"
     local port="2${mmdd}"
-    local image_branch=$(_doz_branch_to_image "$branch")
-    local image="${_DOZ_REGISTRY}/srv-gost-signer----${image_branch}:${pipeline}"
+    local image="${_DOZ_REGISTRY}/srv-gost-signer----${branch}:${pipeline}"
 
     _doz_check_container "$container" || return 1
 
