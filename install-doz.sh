@@ -56,9 +56,9 @@ dozbranch() {
 
     if [ "$branch" = "feature/dzn-..." ]; then
         local num
-        printf "dzn номер> "
-        read -r num
-        [ -z "$num" ] && { echo "Номер не указан."; return 1; }
+        printf "dzn номер> " >/dev/tty
+        read -r num </dev/tty
+        [ -z "$num" ] && { echo "Номер не указан." >/dev/tty; return 1; }
         branch="feature/dzn-$num"
     fi
 
@@ -76,8 +76,8 @@ _doz_branch_to_image() {
 _doz_check_container() {
     local name="$1"
     if eval "$_DOCKER ps -a --format '{{.Names}}'" | grep -qx "$name"; then
-        printf "\033[1;33m[!]\033[0m Контейнер '%s' уже существует. Удалить? [y/N] " "$name"
-        read -r answer
+        printf "\033[1;33m[!]\033[0m Контейнер '%s' уже существует. Удалить? [y/N] " "$name" >/dev/tty
+        read -r answer </dev/tty
         if [[ "$answer" =~ ^[Yy]$ ]]; then
             eval "$_DOCKER rm -f $name"
         else
@@ -95,9 +95,9 @@ _doz_get_params() {
         pipeline="$2"
     else
         branch=$(dozbranch) || return 1
-        printf "Pipeline ID> "
-        read -r pipeline
-        [ -z "$pipeline" ] && { echo "Pipeline не указан."; return 1; }
+        printf "Pipeline ID> " >/dev/tty
+        read -r pipeline </dev/tty
+        [ -z "$pipeline" ] && { echo "Pipeline не указан." >/dev/tty; return 1; }
     fi
     echo "$branch" "$pipeline"
 }
@@ -240,12 +240,12 @@ dozrun-gost() {
     _doz_check_container "$container" || return 1
 
     local cont_password key_name
-    printf "CONTAINER_PASSWORD [1234567890]> "
-    read -r cont_password
+    printf "CONTAINER_PASSWORD [1234567890]> " >/dev/tty
+    read -r cont_password </dev/tty
     cont_password=${cont_password:-1234567890}
 
-    printf "KEY_CONTAINER_NAME [81ab0001.000]> "
-    read -r key_name
+    printf "KEY_CONTAINER_NAME [81ab0001.000]> " >/dev/tty
+    read -r key_name </dev/tty
     key_name=${key_name:-81ab0001.000}
 
     echo -e "\033[0;32m[✓]\033[0m Запуск ГОСТ (dev): $container (порт $port)"
@@ -281,16 +281,16 @@ dozrun-gost-prod() {
     _doz_check_container "$container" || return 1
 
     local cont_password key_name crypto_license
-    printf "CONTAINER_PASSWORD [1234567890]> "
-    read -r cont_password
+    printf "CONTAINER_PASSWORD [1234567890]> " >/dev/tty
+    read -r cont_password </dev/tty
     cont_password=${cont_password:-1234567890}
 
-    printf "KEY_CONTAINER_NAME [81ab0001.000]> "
-    read -r key_name
+    printf "KEY_CONTAINER_NAME [81ab0001.000]> " >/dev/tty
+    read -r key_name </dev/tty
     key_name=${key_name:-81ab0001.000}
 
-    printf "CRYPTO_LICENSE [40000-A0000-B0000-C0000-D0000]> "
-    read -r crypto_license
+    printf "CRYPTO_LICENSE [40000-A0000-B0000-C0000-D0000]> " >/dev/tty
+    read -r crypto_license </dev/tty
     crypto_license=${crypto_license:-40000-A0000-B0000-C0000-D0000}
 
     echo -e "\033[0;32m[✓]\033[0m Запуск ГОСТ (prod): $container (порт $port)"
