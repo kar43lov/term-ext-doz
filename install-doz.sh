@@ -48,6 +48,9 @@ cat > "$DOZ_FILE" << 'DOZ_EOF'
 # ── Реестр образов ───────────────────────────────────────────
 _DOZ_REGISTRY="gitlab.dev.iac.mchs.ru:5050/cgu/doznanie.web"
 
+# Docker через sudo (registry авторизован под root)
+_DOZ_DOCKER="sudo docker"
+
 # ── Выбор ветки ──────────────────────────────────────────────
 dozbranch() {
     local branch
@@ -75,11 +78,11 @@ _doz_branch_to_image() {
 # Проверка существующего контейнера
 _doz_check_container() {
     local name="$1"
-    if eval "$_DOCKER ps -a --format '{{.Names}}'" | grep -qx "$name"; then
+    if eval "$_DOZ_DOCKER ps -a --format '{{.Names}}'" | grep -qx "$name"; then
         printf "\033[1;33m[!]\033[0m Контейнер '%s' уже существует. Удалить? [y/N] " "$name" >/dev/tty
         read -r answer </dev/tty
         if [[ "$answer" =~ ^[Yy]$ ]]; then
-            eval "$_DOCKER rm -f $name"
+            eval "$_DOZ_DOCKER rm -f $name"
         else
             echo "Отменено." >/dev/tty
             return 1
@@ -123,7 +126,7 @@ dozrun() {
     echo -e "\033[0;32m[✓]\033[0m Запуск: $container (порт $port)"
     echo "  Image: $image"
 
-    eval "$_DOCKER run -d \
+    eval "$_DOZ_DOCKER run -itd \
         --name $container \
         --restart unless-stopped \
         -e TZ=Europe/Moscow \
@@ -152,7 +155,7 @@ dozrun-prod() {
     echo -e "\033[0;32m[✓]\033[0m Запуск (prod): $container (порт $port)"
     echo "  Image: $image"
 
-    eval "$_DOCKER run -d \
+    eval "$_DOZ_DOCKER run -itd \
         --name $container \
         --restart unless-stopped \
         -e TZ=Europe/Moscow \
@@ -183,7 +186,7 @@ dozrun-kafka() {
     echo -e "\033[0;32m[✓]\033[0m Запуск Kafka (dev): $container (порт $port)"
     echo "  Image: $image"
 
-    eval "$_DOCKER run -d \
+    eval "$_DOZ_DOCKER run -itd \
         --name $container \
         --restart unless-stopped \
         -e TZ=Europe/Moscow \
@@ -212,7 +215,7 @@ dozrun-kafka-prod() {
     echo -e "\033[0;32m[✓]\033[0m Запуск Kafka (prod): $container (порт $port)"
     echo "  Image: $image"
 
-    eval "$_DOCKER run -d \
+    eval "$_DOZ_DOCKER run -itd \
         --name $container \
         --restart unless-stopped \
         -e TZ=Europe/Moscow \
@@ -252,7 +255,7 @@ dozrun-gost() {
     echo -e "\033[0;32m[✓]\033[0m Запуск ГОСТ (dev): $container (порт $port)"
     echo "  Image: $image"
 
-    eval "$_DOCKER run -d \
+    eval "$_DOZ_DOCKER run -itd \
         --name $container \
         --restart unless-stopped \
         -e TZ=Europe/Moscow \
@@ -297,7 +300,7 @@ dozrun-gost-prod() {
     echo -e "\033[0;32m[✓]\033[0m Запуск ГОСТ (prod): $container (порт $port)"
     echo "  Image: $image"
 
-    eval "$_DOCKER run -d \
+    eval "$_DOZ_DOCKER run -itd \
         --name $container \
         --restart unless-stopped \
         -e TZ=Europe/Moscow \
