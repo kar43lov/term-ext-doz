@@ -56,7 +56,7 @@ dozbranch() {
 
     if [ "$branch" = "feature/dzn-..." ]; then
         local num
-        printf "dzn номер> " >/dev/tty
+        printf "Номер задачи (например 220 → feature/dzn-220): " >/dev/tty
         read -r num </dev/tty
         [ -z "$num" ] && { echo "Номер не указан." >/dev/tty; return 1; }
         branch="feature/dzn-$num"
@@ -81,7 +81,7 @@ _doz_check_container() {
         if [[ "$answer" =~ ^[Yy]$ ]]; then
             eval "$_DOCKER rm -f $name"
         else
-            echo "Отменено."
+            echo "Отменено." >/dev/tty
             return 1
         fi
     fi
@@ -95,7 +95,8 @@ _doz_get_params() {
         pipeline="$2"
     else
         branch=$(dozbranch) || return 1
-        printf "Pipeline ID> " >/dev/tty
+        echo -e "\033[0;32m[✓]\033[0m Ветка: $branch" >/dev/tty
+        printf "Pipeline ID (номер сборки в GitLab): " >/dev/tty
         read -r pipeline </dev/tty
         [ -z "$pipeline" ] && { echo "Pipeline не указан." >/dev/tty; return 1; }
     fi
