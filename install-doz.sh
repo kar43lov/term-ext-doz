@@ -68,6 +68,36 @@ dozbranch() {
     echo "$branch"
 }
 
+# ── Шпаргалка ────────────────────────────────────────────────
+help-doz() {
+    echo ""
+    echo "\033[1;36m  term-ext-doz — Дознание\033[0m"
+    echo "\033[90m  ─────────────────────────────────────────\033[0m"
+    echo ""
+    echo "\033[1;33m  Ветка\033[0m"
+    echo "    dozbranch              интерактивный выбор (fzf)"
+    echo ""
+    echo "\033[1;33m  Main\033[0m"
+    echo "    dozrun                 dev  (порт 1MMDD, контейнер doznanie_YYMMDD)"
+    echo "    dozrun-prod            prod (порт 1MMDD)"
+    echo "    dozrun test 32068      напрямую: ветка + pipeline"
+    echo ""
+    echo "\033[1;33m  Kafka consumer\033[0m"
+    echo "    dozrun-kafka           dev  (порт 4MMDD, контейнер doznanie__consumer_YYMMDD)"
+    echo "    dozrun-kafka-prod      prod (порт 6MMDD)"
+    echo ""
+    echo "\033[1;33m  ГОСТ-подпись\033[0m"
+    echo "    dozrun-gost            dev  (порт 1MMDD, контейнер doznanie__gost-signer_YYMMDD)"
+    echo "    dozrun-gost-prod       prod (порт 2MMDD)"
+    echo ""
+    echo "\033[1;33m  Docker (из term-ext)\033[0m"
+    echo "    dps / dr / ds / dst / drm / dlogs"
+    echo ""
+    echo "\033[90m  MMDD = месяц+день, YYMMDD = год+месяц+день\033[0m"
+    echo "\033[90m  Реестр: gitlab.dev.iac.mchs.ru:5050/cgu/doznanie.web/\033[0m"
+    echo ""
+}
+
 # ── Вспомогательные функции ──────────────────────────────────
 
 # Проверка существующего контейнера
