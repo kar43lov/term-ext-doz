@@ -14,6 +14,12 @@ curl -fsSL https://raw.githubusercontent.com/kar43lov/term-ext-doz/main/install-
 
 ## Команды
 
+### Шпаргалка
+
+```bash
+help-doz   # Цветная справка по всем командам term-ext-doz
+```
+
 ### Выбор ветки
 
 ```bash
